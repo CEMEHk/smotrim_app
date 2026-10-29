@@ -147,7 +147,7 @@ function toast(t,ms){var e=$('toast');e.textContent=t;e.className='on';clearTime
 function store(){try{localStorage.setItem('sm',JSON.stringify(D))}catch(e){}}
 function api(b){b.initData=tg.initData;return fetch(API,{method:'POST',redirect:'follow',headers:{'Content-Type':'text/plain;charset=utf-8'},body:JSON.stringify(b)}).catch(function(){throw new Error('net')}).then(function(r){return r.json().catch(function(){throw new Error('bad_response')})}).then(function(j){if(!j.ok)throw new Error(j.error);return j})}
 function fail(e){var m=ERR[e.message]||('Ошибка: '+e.message);if(D.length)toast(m);else $('list').innerHTML='<div class="empty">'+m+'</div>'}
-function load(){return api({action:'list'}).then(function(j){if((j.ver||0)<3)toast(ERR.old,9000);D=j.items;S.me=S.add=j.me.who;store();refresh()}).catch(fail)}
+function load(){return api({action:'list'}).then(function(j){if((j.ver||0)<4)toast(ERR.old,9000);D=j.items;S.me=S.add=j.me.who;store();refresh()}).catch(fail)}
 function byId(id){return D.filter(function(x){return x.id==id})[0]}
 function resetFlt(){S.fmt='Все';S.fav=S.unw=S.top=S.multi=false;S.by=null;S.genres=[];S.sort='def'}
 function ok(x){var q=nm(S.q.trim());
