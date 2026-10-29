@@ -28,11 +28,13 @@ h2{margin:0 0 12px;font-size:22px;line-height:1.15;font-weight:800;letter-spacin
 .seg button{flex:1;min-width:0;padding:9px 2px;border-radius:12px;font-weight:600;font-size:13px;white-space:nowrap;color:var(--mu)}
 .seg button.on{background:var(--sf);color:var(--tx);box-shadow:0 2px 8px var(--ln)}
 .seg small{margin-left:3px;font-size:11px;font-weight:500;opacity:.7}
-.chips{display:flex;gap:8px;overflow-x:auto;padding:14px 16px 4px}
+.chips{display:flex;gap:6px;padding:12px 16px 4px}
+.chips .cp{flex:1 1 auto;min-width:0;padding:6px 4px;font-size:13px;white-space:nowrap}
+.chips .cp.ic{flex:0 0 auto;min-width:38px;padding:6px 8px}
 .cp{flex:none;display:inline-flex;align-items:center;justify-content:center;padding:6px 14px;border-radius:18px;background:var(--chip);color:var(--mu);font-weight:500}
 .cp.ic{padding:6px 12px}
 .cp.on{background:var(--g);color:#fff}
-.nb{margin-left:6px;background:var(--tx);color:var(--bg);border-radius:10px;padding:0 6px;font-size:11px}
+.nb{margin-left:4px;background:var(--tx);color:var(--bg);border-radius:10px;padding:0 6px;font-size:11px}
 .w0{--wc:#ff3b4e}.w1{--wc:#8b5cf6}
 .grid{display:grid;padding:14px 16px}
 .g2{grid-template-columns:repeat(2,1fr);gap:20px 14px}
@@ -119,11 +121,11 @@ h2{margin:0 0 12px;font-size:22px;line-height:1.15;font-weight:800;letter-spacin
 <script>
 var API='https://script.google.com/macros/s/AKfycbwOibNpstA0MZkHToCGmW91yegnE65amjoVrBtZygny38Tv5JAtZRoK75ShLOo8yIom/exec';
 var tg=window.Telegram&&Telegram.WebApp,D=[],cur=null,SHEET='',dirty=false,pend={};
-var S={tab:'all',fmt:'Все',q:'',me:0,add:0,v:'2',fav:false,unw:false,by:null,genre:null,top:false,multi:false,sort:'def'};
+var S={tab:'all',fmt:'Все',q:'',me:0,add:0,v:'2',fav:false,unw:false,by:null,genres:[],top:false,multi:false,sort:'def'};
 var $=function(i){return document.getElementById(i)};
-var TABS=[['all','Список'],['now','Смотрим'],['drop','Заброшено'],['done','Просмотрено']],FM=[['Все','Все'],['Фильм','Фильмы'],['Сериал','Сериалы'],['Мультфильм','Мультики']];
+var TABS=[['all','Список'],['now','Смотрим'],['done','Просмотрено'],['drop','Заброшено']],FM=[['Все','Все'],['Фильм','Фильмы'],['Сериал','Сериалы'],['Мультфильм','Мультики']];
 var EM={'Фильм':'🎬','Сериал':'📺','Мультфильм':'🧸'};
-var ERR={auth:'Не удалось проверить Telegram. Закройте и снова откройте приложение через бота.',forbidden:'Это приложение только для двоих.',no_tmdb_key:'В таблице не задан ключ TMDB.',server:'Ошибка на стороне таблицы. Попробуйте ещё раз.'};
+var ERR={auth:'Не удалось проверить Telegram. Закройте и снова откройте приложение через бота.',forbidden:'Это приложение только для двоих.',no_tmdb_key:'В таблице не задан ключ TMDB.',server:'Ошибка на стороне таблицы. Попробуйте ещё раз.',net:'Нет связи с таблицей. Проверьте интернет и попробуйте ещё раз.',bad_response:'Таблица ответила не так, как ожидалось. Проверьте, что развёртывание в Apps Script обновлено до новой версии.',bad_request:'Таблица не поняла команду. Скорее всего, в Apps Script не опубликована новая версия.',not_found:'Не нашёл эту строку в таблице. Нажмите ↻, возможно, список изменился.',old:'Таблица работает на старой версии скрипта. В Apps Script: Управление развёртываниями → карандаш → Новая версия → Развернуть.'};
 if(tg){try{tg.ready();tg.expand();var dk=tg.colorScheme=='dark';document.documentElement.dataset.theme=tg.colorScheme;tg.setHeaderColor(dk?'#0f0b16':'#f5f3fa');tg.setBackgroundColor(dk?'#0f0b16':'#f5f3fa')}catch(e){}}
 function hap(){try{tg.HapticFeedback.impactOccurred('light')}catch(e){}}
 function esc(s){return String(s==null?'':s).replace(/[&<>"]/g,function(c){return{'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]})}
@@ -141,16 +143,16 @@ function bg(s){s=String(s||'');var h=0;for(var i=0;i<s.length;i++)h=(h*31+s.char
  return 'radial-gradient(circle at 25% 15%,hsl('+h+' 85% 68%),transparent 60%),linear-gradient(160deg,hsl('+(h+25)+' 70% 52%),hsl('+(h+75)+' 62% 26%))'}
 function ts(d){if(!d)return 0;var p=String(d).split('.');return p.length==3?new Date(p[2],p[1]-1,p[0]).getTime():new Date(p[0],0,1).getTime()}
 function today(){var d=new Date();return ('0'+d.getDate()).slice(-2)+'.'+('0'+(d.getMonth()+1)).slice(-2)+'.'+d.getFullYear()}
-function toast(t){var e=$('toast');e.textContent=t;e.className='on';clearTimeout(toast.t);toast.t=setTimeout(function(){e.className=''},3000)}
+function toast(t,ms){var e=$('toast');e.textContent=t;e.className='on';clearTimeout(toast.t);toast.t=setTimeout(function(){e.className=''},ms||3000)}
 function store(){try{localStorage.setItem('sm',JSON.stringify(D))}catch(e){}}
-function api(b){b.initData=tg.initData;return fetch(API,{method:'POST',redirect:'follow',headers:{'Content-Type':'text/plain;charset=utf-8'},body:JSON.stringify(b)}).then(function(r){return r.json()}).then(function(j){if(!j.ok)throw new Error(j.error);return j})}
-function fail(e){var m=ERR[e.message]||'Нет связи. Проверьте интернет и попробуйте ещё раз.';if(D.length)toast(m);else $('list').innerHTML='<div class="empty">'+m+'</div>'}
-function load(){return api({action:'list'}).then(function(j){D=j.items;S.me=S.add=j.me.who;store();refresh()}).catch(fail)}
+function api(b){b.initData=tg.initData;return fetch(API,{method:'POST',redirect:'follow',headers:{'Content-Type':'text/plain;charset=utf-8'},body:JSON.stringify(b)}).catch(function(){throw new Error('net')}).then(function(r){return r.json().catch(function(){throw new Error('bad_response')})}).then(function(j){if(!j.ok)throw new Error(j.error);return j})}
+function fail(e){var m=ERR[e.message]||('Ошибка: '+e.message);if(D.length)toast(m);else $('list').innerHTML='<div class="empty">'+m+'</div>'}
+function load(){return api({action:'list'}).then(function(j){if((j.ver||0)<3)toast(ERR.old,9000);D=j.items;S.me=S.add=j.me.who;store();refresh()}).catch(fail)}
 function byId(id){return D.filter(function(x){return x.id==id})[0]}
-function resetFlt(){S.fmt='Все';S.fav=S.unw=S.top=S.multi=false;S.by=S.genre=null;S.sort='def'}
+function resetFlt(){S.fmt='Все';S.fav=S.unw=S.top=S.multi=false;S.by=null;S.genres=[];S.sort='def'}
 function ok(x){var q=nm(S.q.trim());
- return (S.tab=='all'||x.st==S.tab)&&(S.fmt=='Все'||x.f==S.fmt)&&(!q||nm(x.ru).indexOf(q)>=0||nm(x.en).indexOf(q)>=0)&&(!S.fav||x.fav)&&(!S.unw||(!x.n&&x.st!='done'))&&(S.by===null||x.by===S.by)&&(!S.genre||nm(x.g).indexOf(S.genre)>=0)&&(!S.top||x.r>=8)&&(!S.multi||x.n>1)}
-function nflt(){return (S.by!==null)+(S.genre!==null)+S.top+S.multi+S.unw+(S.sort!='def')}
+ return (S.tab=='all'||x.st==S.tab)&&(S.fmt=='Все'||x.f==S.fmt)&&(!q||nm(x.ru).indexOf(q)>=0||nm(x.en).indexOf(q)>=0)&&(!S.fav||x.fav)&&(!S.unw||(!x.n&&x.st!='done'))&&(S.by===null||x.by===S.by)&&S.genres.every(function(g){return nm(x.g).indexOf(g)>=0})&&(!S.top||x.r>=8)&&(!S.multi||x.n>1)}
+function nflt(){return (S.by!==null)+(S.genres.length>0)+S.top+S.multi+S.unw+(S.sort!='def')}
 function chip(k,v,l,on){return '<button class="cp'+(on?' on':'')+'" data-k="'+k+'"'+(v===undefined?'':' data-v="'+esc(v)+'"')+'>'+l+'</button>'}
 function pz(x){return '<div class="pz'+(x.by===null?'':' w'+x.by)+'" style="background:'+bg(x.en||x.ru)+'"><span>'+(EM[x.f]||'🎬')+'</span>'+(x.poster?'<img src="'+esc(x.poster)+'" loading="lazy" decoding="async" alt="" onerror="this.remove()">':'')}
 function meta(x){return esc([x.y,String(x.f).toLowerCase()].filter(Boolean).join(', ')+(x.st=='done'&&x.d?', '+x.d:''))}
@@ -176,11 +178,13 @@ function render(){
 function refresh(){if(SHEET)dirty=true;else render()}
 function openSheet(h,k){SHEET=k;$('sh').innerHTML='<div class="grip"></div>'+h;$('bk').className='bk on';$('sh').className='sh on'}
 function closeSheet(){SHEET='';$('bk').className='bk';$('sh').className='sh';if(dirty){dirty=false;render()}}
+function isOn(k,v){return k=='by'?S.by===+v:k=='genre'?S.genres.indexOf(v)>=0:k=='sort'?S.sort==v:k=='fmt'?S.fmt==v:!!S[k]}
+function syncChips(){[].forEach.call(document.querySelectorAll('#sh .cp[data-k]'),function(b){b.classList.toggle('on',isOn(b.dataset.k,b.dataset.v))})}
 function filterSheet(){
  var G={};D.forEach(function(x){String(x.g).split(/,\s*/).forEach(function(g){g=g.trim().toLowerCase();if(g)G[g]=1})});
  var SO=[['def','Последние добавленные'],['date','Дата просмотра'],['az','А—Я'],['year','Новые по году'],['rating','Рейтинг']];
  openSheet('<h2>Фильтры</h2><div class="sub lb">Кто предложил</div><div class="fl">'+chip('by',0,dot(0),S.by===0)+chip('by',1,dot(1),S.by===1)+'</div>'+
-  '<div class="sub lb">Жанр</div><div class="fl">'+Object.keys(G).sort().map(function(g){return chip('genre',g,esc(cap(g)),S.genre===g)}).join('')+'</div>'+
+  '<div class="sub lb">Жанр</div><div class="fl">'+Object.keys(G).sort().map(function(g){return chip('genre',g,esc(cap(g)),S.genres.indexOf(g)>=0)}).join('')+'</div>'+
   '<div class="sub lb">Ещё</div><div class="fl">'+chip('unw',undefined,'Ещё не смотрели',S.unw)+chip('top',undefined,'Рейтинг 8+',S.top)+chip('multi',undefined,'Смотрели не раз',S.multi)+'</div>'+
   '<div class="sub lb">Сортировка</div><div class="fl">'+SO.map(function(s){return chip('sort',s[0],s[1],S.sort==s[0])}).join('')+'</div>'+
   '<div class="acts"><button class="btn" data-a2="reset">Сбросить</button><button class="btn main" data-a2="close">Показать</button></div>','flt');
@@ -244,7 +248,7 @@ function addSheet(){
   clearTimeout(addSheet.t);var v=this.value.trim();
   if(v.length<2){$('hits').innerHTML='';return}
   $('hits').innerHTML='<div class="empty">Ищу…</div>';
-  addSheet.t=setTimeout(function(){api({action:'search',q:v}).then(function(j){if($('aq')&&$('aq').value.trim()==v)$('hits').innerHTML=hitsHtml(j.results)}).catch(function(e){$('hits').innerHTML='<div class="empty">'+(ERR[e.message]||'Нет связи.')+'</div>'})},500)};
+  addSheet.t=setTimeout(function(){api({action:'search',q:v}).then(function(j){if($('aq')&&$('aq').value.trim()==v)$('hits').innerHTML=hitsHtml(j.results)}).catch(function(e){$('hits').innerHTML='<div class="empty">'+(ERR[e.message]||'Ошибка: '+e.message)+'</div>'})},500)};
 }
 function addItem(key){
  toast('Добавляю…');
@@ -260,10 +264,11 @@ document.addEventListener('click',function(e){
  else if(d.view){S.v=d.view;try{localStorage.setItem('smv',d.view)}catch(e){}render()}
  else if(d.k){
   if(d.k=='add'){S.add=+d.v;[].forEach.call(t.parentNode.children,function(b){b.classList.toggle('on',b===t)});return}
-  if(d.v===undefined)S[d.k]=!S[d.k];
+  if(d.k=='genre'){var gi=S.genres.indexOf(d.v);if(gi<0)S.genres.push(d.v);else S.genres.splice(gi,1)}
+  else if(d.v===undefined)S[d.k]=!S[d.k];
   else if(d.k=='fmt'||d.k=='sort')S[d.k]=d.v;
   else S[d.k]=String(S[d.k])===d.v?null:(d.k=='by'?+d.v:d.v);
-  render();if(SHEET=='flt')filterSheet()}
+  render();if(SHEET=='flt')syncChips()}
  else if(d.a2=='flt')filterSheet();
  else if(d.a2=='reset'){resetFlt();render();filterSheet()}
  else if(d.a2=='close')closeSheet();
