@@ -36,9 +36,11 @@ h2{margin:0 0 12px;padding-right:40px;font-size:22px;line-height:1.15;font-weigh
 .chips{position:sticky;top:calc(env(safe-area-inset-top,0px) + var(--hh,104px));z-index:8;display:flex;gap:6px;padding:10px 16px 8px;background:var(--glass);transition:transform .22s ease,opacity .22s ease}
 .chips.hide{transform:translateY(-120%);opacity:0;pointer-events:none}
 .cp{display:inline-flex;align-items:center;justify-content:center;padding:6px 14px;border-radius:18px;background:var(--chip);color:var(--mu);font-weight:500}
-.chips .cp{flex:1 1 auto;min-width:0;padding:6px 4px;font-size:13px;white-space:nowrap}
+.chips .cp{flex:1 1 auto;min-width:0;min-height:32px;padding:6px 4px;font-size:13px;white-space:nowrap}
 .chips .cp.ic{flex:0 0 auto;min-width:38px;padding:6px 8px}
 .cp.on{background:var(--g);color:#fff}
+.cp.wc{background:transparent;border:2px solid var(--ln);color:var(--tx);padding:4px 18px;font-size:20px;line-height:1.2}
+.cp.wc.on{background:transparent;border-color:var(--wc);color:var(--tx)}
 .nb{margin-left:4px;background:var(--tx);color:var(--bg);border-radius:10px;padding:0 6px;font-size:11px}
 .cl{padding:4px 16px 0;color:var(--mu);font-size:13px}
 .grid{display:grid;align-items:start;padding:12px 16px}
@@ -101,8 +103,8 @@ html.out #lockmsg{display:block;padding:140px 24px;text-align:center;color:var(-
 .rt{display:inline-flex;align-items:center;gap:5px;margin:8px 6px 0 0;padding:3px 10px;border-radius:10px;background:var(--chip);font-weight:700;font-size:13px}
 .ov{position:relative;margin:14px 0 0;color:var(--mu)}
 .ov.no::after{content:"💩";position:absolute;right:2px;bottom:-6px;font-size:52px;opacity:.15;pointer-events:none}
-.kv{display:grid;grid-template-columns:auto 1fr;gap:8px 16px;font-size:14px;margin-top:12px;align-items:start}
-.kv>span:nth-child(odd){color:var(--mu);padding-top:3px}
+.kv{display:grid;grid-template-columns:auto 1fr;gap:8px 16px;font-size:14px;margin-top:12px;align-items:baseline}
+.kv>span:nth-child(odd){color:var(--mu)}
 .gb{display:inline-block;padding:3px 11px;border-radius:12px;background:var(--chip);margin:0 6px 6px 0;font-size:13px}
 .ga{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-top:16px}
 .ga.c4{grid-template-columns:repeat(4,1fr)}.ga.c2{grid-template-columns:repeat(2,1fr)}
@@ -177,10 +179,11 @@ html.out #lockmsg{display:block;padding:140px 24px;text-align:center;color:var(-
 <script>
 var API='https://script.google.com/macros/s/AKfycbwOibNpstA0MZkHToCGmW91yegnE65amjoVrBtZygny38Tv5JAtZRoK75ShLOo8yIom/exec';
 var tg=window.Telegram&&Telegram.WebApp,D=[],cur=null,SHEET='',dirty=false,pend={};
-var S={tab:'all',fmt:'Все',q:'',me:0,add:0,v:'2',fav:false,unw:false,by:null,genres:[],coll:null,multi:false,sort:'def',showDone:false};
+var S={tab:'all',fmt:'Все',q:'',me:0,add:0,v:'2',fav:false,unw:false,by:null,genres:[],colls:[],multi:false,sort:'def',showDone:false};
 var $=function(i){return document.getElementById(i)};
 var T0={"search_ph": "Что будем смотреть?", "tab_all": "Список", "tab_now": "Смотрим", "tab_done": "Просмотрено", "tab_drop": "Заброшено", "fmt_all": "Все", "fmt_film": "Фильмы", "fmt_serial": "Сериалы", "fmt_cartoon": "Мультики", "count_total": "Всего: {n}", "count_found": "Найдено: {n}", "empty_list": "Тут пока ничего нет.\nДобавь фильм кнопкой «+» или поменяй фильтры.", "loading": "Достаю вашу коллекцию…", "not_tg": "Открой приложение через бота в Telegram.", "refreshing": "Обновляю…", "eye_show": "Показать просмотренные", "eye_hide": "Скрыть просмотренные", "eye_hint": "Это работает во вкладке «Список»", "filters": "Фильтры", "f_coll": "Подборка", "f_who": "Кто предложил", "f_genre": "Жанр", "f_more": "Ещё", "f_unw": "Ещё не смотрели", "f_multi": "Смотрели не раз", "f_sort": "Сортировка", "sort_def": "Последние добавленные", "sort_date": "Дата просмотра", "sort_az": "А—Я", "sort_year": "Новые по году", "sort_rating": "Рейтинг", "f_reset": "Сбросить", "f_show": "Показать: {n}", "st_want": "В списке", "st_now": "Смотрим", "st_drop": "Заброшено", "st_done": "Просмотрено", "c_status": "Статус", "c_fav": "Избранное", "c_date": "Дата просмотра", "c_views": "Сколько раз смотрели", "c_dates": "Даты: {dates}", "c_who": "Кто предложил", "c_ratings": "Наши оценки", "c_mine": "Твоя оценка", "c_norating": "пока нет", "c_genre": "Жанр", "c_coll": "Подборка", "c_country": "Страна", "c_runtime": "Длительность", "c_series": "Серия {ser}", "c_season": "сезон", "c_episode": "серия", "c_delete": "Удалить из списка (удерживай)", "del_hint": "Нажми и подержи секунду, чтобы удалить", "del_done": "Убрали из списка", "confirm_reset": "Вернуть в список? Просмотры и даты сбросятся.", "badge_series": "Серия {ser}", "tag_now": "▶ Смотрим", "tag_drop": "⏹ Заброшено", "add_title": "Что добавим?", "add_who": "Кто предложил", "add_ph": "Название на русском или английском", "add_hint": "Начинай вводить название.", "add_searching": "Ищу…", "add_none": "Ничего не нашлось. Попробуй добавить год: «Название (2014)».", "add_dup": "Уже в вашем списке", "add_adding": "Добавляю…", "add_ok": "Добавили «{name}» — будет что посмотреть вместе", "add_already": "Это уже есть в вашем списке", "err_auth": "Не удалось проверить Telegram. Закрой и снова открой приложение через бота.", "err_forbidden": "Это приложение только для двоих.", "err_tmdb": "В таблице не задан ключ TMDB.", "err_server": "Ошибка на стороне таблицы. Попробуй ещё раз.", "err_net": "Нет связи с таблицей. Проверь интернет и попробуй ещё раз.", "err_resp": "Таблица ответила не так, как ожидалось. Проверь, что развёртывание в Apps Script обновлено до новой версии.", "err_req": "Таблица не поняла команду. Скорее всего, в Apps Script не опубликована новая версия.", "err_nf": "Не нашёл эту строку в таблице. Нажми ↻, возможно, список изменился.", "err_old": "Таблица работает на старой версии скрипта. В Apps Script: Управление развёртываниями → карандаш → Новая версия → Развернуть."},T={};
 Object.assign(T0,{"hub_title": "Ещё", "hub_stats": "Статистика", "hub_surprise": "Удиви меня", "hub_recs": "Что дальше", "hub_trash": "Корзина", "sup_title": "Удиви меня", "sup_q": "Сегодня смотрим…?", "sup_again": "Другой вариант", "sup_go": "Смотрим!", "sup_none": "В списке пока нечем удивить. Добавь что-нибудь через «+».", "trash_title": "Корзина", "trash_hint": "Здесь лежит то, что вы удалили из списка.", "trash_empty": "В корзине пусто.", "trash_restore": "Вернуть", "trash_done": "Вернули «{name}» в список", "recs_title": "Что дальше", "recs_sub": "Похоже на то, что понравилось вам обоим", "recs_loading": "Подбираю…", "recs_none": "Пока нечего предложить. Поставьте пару высоких оценок — и появятся идеи.", "note_ph": "Что запомнилось? Заметка для вас двоих", "stats_title": "Наша статистика", "stats_all": "Всё время", "stats_year": "Этот год", "stats_catalog": "В каталоге", "stats_watched": "Просмотрено", "stats_planned": "В планах", "stats_hours": "Вместе посмотрели", "stats_hours_val": "{h} ч", "stats_days": "≈ {d} суток подряд, без сна и перерывов", "stats_months": "Когда смотрим", "stats_genres": "Любимые жанры", "stats_taste": "Совпадение вкусов", "stats_taste_cap": "по оценкам, которые вы поставили обоим", "stats_avg": "Средние оценки", "stats_ideas": "Кто чаще предлагает", "stats_top": "Лучшее по нашим оценкам", "stats_gap": "Сильнее всего разошлись во мнениях", "stats_rewatch": "Любимое для пересмотра", "stats_empty": "Пока мало данных. Ставьте оценки и отмечайте просмотры — здесь станет интереснее."});
+Object.assign(T0,{"sort_year_asc": "Старые по году", "sort_rating_asc": "Рейтинг: от низкого", "stats_whose": "Чьи идеи смотрим чаще", "c_eps": "Серий по сезонам"});
 function tx(k,v){var s=(T[k]!=null&&T[k]!==''?T[k]:T0[k]);s=String(s==null?k:s);if(v)for(var n in v)s=s.split('{'+n+'}').join(v[n]);return s}
 function th(k,v){return esc(tx(k,v)).replace(/\n/g,'<br>')}
 function setTx(t){T=t||{};try{localStorage.setItem('smt',JSON.stringify(T))}catch(e){}$('q').placeholder=tx('search_ph')}
@@ -214,13 +217,14 @@ function setBg(u){u=u||'';try{localStorage.setItem('smb',u)}catch(e){}document.d
 function api(b){b.initData=tg.initData;return fetch(API,{method:'POST',redirect:'follow',headers:{'Content-Type':'text/plain;charset=utf-8'},body:JSON.stringify(b)}).catch(function(){throw new Error('net')}).then(function(r){return r.json().catch(function(){throw new Error('bad_response')})}).then(function(j){if(!j.ok)throw new Error(j.error);return j})}
 function lockOut(){try{['sm','smt','smb','smv'].forEach(function(k){localStorage.removeItem(k)})}catch(x){}D=[];closeSheet();document.documentElement.classList.add('out');$('lockmsg').innerHTML=th('err_forbidden')}
 function fail(e){if(e.message=='forbidden'){lockOut();return}var m=errText(e.message)||('Ошибка: '+e.message);if(D.length)toast(m);else $('list').innerHTML='<div class="empty">'+m+'</div>'}
-function load(){return api({action:'list'}).then(function(j){if((j.ver||0)<7)toast(tx('err_old'),9000);D=j.items;S.me=S.add=j.me.who;setBg(j.bg);setTx(j.texts);store();refresh()}).catch(fail)}
+function load(){return api({action:'list'}).then(function(j){if((j.ver||0)<8)toast(tx('err_old'),9000);D=j.items;S.me=S.add=j.me.who;setBg(j.bg);setTx(j.texts);store();refresh()}).catch(fail)}
 function byId(id){return D.filter(function(x){return x.id==id})[0]}
-function resetFlt(){S.fmt='Все';S.fav=S.unw=S.multi=false;S.by=S.coll=null;S.genres=[];S.sort='def'}
+function resetFlt(){S.fmt='Все';S.fav=S.unw=S.multi=false;S.by=null;S.colls=[];S.genres=[];S.sort='def'}
 function ok(x){var q=nm(S.q.trim());
- return (S.tab=='all'?(S.showDone||x.st!='done'):x.st==S.tab)&&(S.fmt=='Все'||x.f==S.fmt)&&(!q||nm(x.ru).indexOf(q)>=0||nm(x.en).indexOf(q)>=0)&&(!S.fav||x.fav)&&(!S.unw||(!x.n&&x.st!='done'))&&(S.by===null||x.by===S.by)&&S.genres.every(function(g){return nm(x.g).indexOf(g)>=0})&&(!S.coll||x.co==S.coll)&&(!S.multi||x.n>1)}
-function nflt(){return (S.by!==null)+(S.genres.length>0)+(S.coll!==null)+S.multi+S.unw+(S.sort!='def')}
+ return (S.tab=='all'?(S.showDone||x.st!='done'):x.st==S.tab)&&(S.fmt=='Все'||x.f==S.fmt)&&(!q||nm(x.ru).indexOf(q)>=0||nm(x.en).indexOf(q)>=0)&&(!S.fav||x.fav)&&(!S.unw||(!x.n&&x.st!='done'))&&(S.by===null||x.by===S.by)&&S.genres.every(function(g){return nm(x.g).indexOf(g)>=0})&&(!S.colls.length||S.colls.indexOf(x.co)>=0)&&(!S.multi||x.n>1)}
+function nflt(){return (S.by!==null)+(S.genres.length>0)+(S.colls.length>0)+S.multi+S.unw+(S.sort!='def')}
 function chip(k,v,l,on){return '<button class="cp'+(on?' on':'')+'" data-k="'+k+'"'+(v===undefined?'':' data-v="'+esc(v)+'"')+'>'+l+'</button>'}
+function chipw(k,v,w,on){return '<button class="cp wc w'+w+(on?' on':'')+'" data-k="'+k+'" data-v="'+v+'" aria-label="'+(w?'Она':'Он')+'">'+dot(w)+'</button>'}
 function pz(x){return '<div class="pz'+(x.by===null?'':' w'+x.by)+'" style="background:'+bg(x.en||x.ru)+'"><span>'+(EM[x.f]||'🎬')+'</span>'+(x.poster?'<img src="'+esc(x.poster)+'" loading="lazy" decoding="async" alt="" onerror="this.remove()">':'')}
 function meta(x){return esc([x.y,String(x.f).toLowerCase()].filter(Boolean).join(', ')+(x.st=='done'&&x.d?', '+x.d:''))}
 function render(){
@@ -232,13 +236,15 @@ function render(){
  $('eye').innerHTML=S.showDone?EYE_ON:EYE_OFF;$('eye').className='ico'+(S.showDone?' on':'')+(S.tab=='all'?'':' dim');
  $('eye').setAttribute('aria-label',tx(S.showDone?'eye_hide':'eye_show'));
  var L=D.filter(ok),s=S.sort;
- if(S.coll&&s=='def')L.sort(function(a,b){return (a.po||9999)-(b.po||9999)||(+a.y||9999)-(+b.y||9999)});
+ if(S.colls.length&&s=='def')L.sort(function(a,b){return (S.colls.length>1?String(a.co).localeCompare(String(b.co),'ru'):0)||(a.po||9999)-(b.po||9999)||(+a.y||9999)-(+b.y||9999)});
  else if(s=='az')L.sort(function(a,b){return a.ru.localeCompare(b.ru,'ru')});
  else if(s=='year')L.sort(function(a,b){return (+b.y||0)-(+a.y||0)});
- else if(s=='rating')L.sort(function(a,b){return b.r-a.r});
+ else if(s=='year_asc')L.sort(function(a,b){return (+a.y||9999)-(+b.y||9999)});
+ else if(s=='rating')L.sort(function(a,b){return (b.ri||b.r||0)-(a.ri||a.r||0)});
+ else if(s=='rating_asc')L.sort(function(a,b){return (a.ri||a.r||99)-(b.ri||b.r||99)});
  else if(s=='date')L.sort(function(a,b){return ts(b.d)-ts(a.d)});
  else L.sort(function(a,b){return (b.ad||0)-(a.ad||0)||(b.ro||0)-(a.ro||0)});
- $('cl').textContent=tx((n>0||S.fmt!='Все'||S.fav||S.coll||S.q.trim())?'count_found':'count_total',{n:L.length});
+ $('cl').textContent=tx((n>0||S.fmt!='Все'||S.fav||S.colls.length||S.q.trim())?'count_found':'count_total',{n:L.length});
  var li=S.v=='l'||S.v=='t',w=$('list');w.className='grid '+(li?'gl':'g'+S.v);
  if(!L.length){w.innerHTML='<div class="empty">'+th(D.length?'empty_list':'loading')+'</div>';return}
  w.innerHTML=L.map(function(x){
@@ -248,16 +254,16 @@ function render(){
   return '<button class="tile" data-id="'+esc(x.id)+'">'+pz(x)+(x.st=='now'?'<div class="bdg nw">▶</div>':x.st=='drop'?'<div class="bdg nw dp">⏹</div>':'')+(x.n>0?'<div class="bdg cnt">'+eye(x.n)+'</div>':'')+(prg?'<div class="bdg prg">'+prg+'</div>':'')+(x.fav?'<div class="bdg fv">⭐</div>':'')+'</div><div class="tt">'+esc(x.ru)+'</div><div class="mt">'+meta(x)+'</div></button>'}).join('');
 }
 function refresh(){if(SHEET)dirty=true;else render()}
-function openSheet(h,k){var keep=SHEET==k?$('sh').scrollTop:0;SHEET=k;$('sh').innerHTML='<div class="grip"></div><div class="sx"><button class="x" data-a2="close" aria-label="Закрыть">✕</button></div>'+h;$('sh').scrollTop=keep;$('bk').className='bk on';$('sh').className='sh on';document.documentElement.classList.add('lock')}
+function openSheet(h,k){var keep=SHEET==k?$('sh').scrollTop:0;SHEET=k;$('sh').innerHTML='<div class="grip"></div>'+(k=='hub'?'':'<div class="sx"><button class="x" data-a2="close" aria-label="Закрыть">✕</button></div>')+h;$('sh').scrollTop=keep;$('bk').className='bk on';$('sh').className='sh on';document.documentElement.classList.add('lock')}
 function closeSheet(){SHEET='';$('bk').className='bk';$('sh').className='sh';document.documentElement.classList.remove('lock');if(dirty){dirty=false;render()}}
-function isOn(k,v){return k=='by'?S.by===+v:k=='genre'?S.genres.indexOf(v)>=0:k=='sort'?S.sort==v:k=='fmt'?S.fmt==v:k=='coll'?S.coll===v:!!S[k]}
+function isOn(k,v){return k=='by'?S.by===+v:k=='genre'?S.genres.indexOf(v)>=0:k=='sort'?S.sort==v:k=='fmt'?S.fmt==v:k=='coll'?S.colls.indexOf(v)>=0:!!S[k]}
 function syncChips(){[].forEach.call(document.querySelectorAll('#sh .cp[data-k]'),function(b){b.classList.toggle('on',isOn(b.dataset.k,b.dataset.v))});var b=$('shn');if(b)b.textContent=tx('f_show',{n:D.filter(ok).length})}
 function filterSheet(){
  var G={},C={};D.forEach(function(x){String(x.g).split(/,\s*/).forEach(function(g){g=g.trim().toLowerCase();if(g)G[g]=1});if(x.co)C[x.co]=1});
- var SO=[['def','sort_def'],['date','sort_date'],['az','sort_az'],['year','sort_year'],['rating','sort_rating']];
+ var SO=[['def','sort_def'],['date','sort_date'],['az','sort_az'],['year','sort_year'],['year_asc','sort_year_asc'],['rating','sort_rating'],['rating_asc','sort_rating_asc']];
  var cs=Object.keys(C).sort(function(a,b){return a.localeCompare(b,'ru')});
- openSheet('<h2>'+th('filters')+'</h2>'+(cs.length?'<div class="sub lb" style="margin-top:0">'+th('f_coll')+'</div><div class="fl">'+cs.map(function(k){return chip('coll',k,esc(k),S.coll===k)}).join('')+'</div>':'')+
-  '<div class="sub lb">'+th('f_who')+'</div><div class="fl">'+chip('by',0,dot(0),S.by===0)+chip('by',1,dot(1),S.by===1)+'</div>'+
+ openSheet('<h2>'+th('filters')+'</h2>'+(cs.length?'<div class="sub lb" style="margin-top:0">'+th('f_coll')+'</div><div class="fl">'+cs.map(function(k){return chip('coll',k,esc(k),S.colls.indexOf(k)>=0)}).join('')+'</div>':'')+
+  '<div class="sub lb">'+th('f_who')+'</div><div class="fl">'+chipw('by',0,0,S.by===0)+chipw('by',1,1,S.by===1)+'</div>'+
   '<div class="sub lb">'+th('f_genre')+'</div><div class="fl">'+Object.keys(G).sort().map(function(g){return chip('genre',g,esc(cap(g)),S.genres.indexOf(g)>=0)}).join('')+'</div>'+
   '<div class="sub lb">'+th('f_more')+'</div><div class="fl">'+chip('unw',undefined,th('f_unw'),S.unw)+chip('multi',undefined,th('f_multi'),S.multi)+'</div>'+
   '<div class="sub lb">'+th('f_sort')+'</div><div class="fl">'+SO.map(function(s){return chip('sort',s[0],th(s[1]),S.sort==s[0])}).join('')+'</div>'+
@@ -268,7 +274,7 @@ function detail(id){
  var ab=function(a,v,ic,c,on){return '<button class="ab'+(on?' on':'')+'" data-a="'+a+'"'+(v===undefined?'':' data-v="'+v+'"')+'><span>'+ic+'</span>'+c+'</button>'};
  var rt=x.f=='Сериал'?(x.seasons?x.seasons+' сез.':''):(x.runtime?x.runtime+' мин':'');
  var gens=String(x.g||'').split(/,\s*/).filter(Boolean).map(function(g){return '<button class="gb" data-gen="'+esc(g.toLowerCase())+'">'+esc(cap(g))+'</button>'}).join('');
- var sr=x.f=='Сериал'?'<div class="st"><b>'+th('c_series',{ser:x.ser||'—'})+'</b><em>'+th('c_season')+'</em><button data-a="s-">−</button><button data-a="s+">+</button><em>'+th('c_episode')+'</em><button data-a="e-">−</button><button data-a="e+">+</button><button data-a="ser" data-v="" aria-label="Сбросить серию">✕</button></div>':'';
+ var cs=(x.eps||[])[(parseInt(x.ser)||0)-1],sr=x.f=='Сериал'?'<div class="st"><b>'+th('c_series',{ser:x.ser||'—'})+(cs?' <em>/ '+cs+'</em>':'')+'</b><em>'+th('c_season')+'</em><button data-a="s-">−</button><button data-a="s+">+</button><em>'+th('c_episode')+'</em><button data-a="e-">−</button><button data-a="e+">+</button><button data-a="ser" data-v="" aria-label="Сбросить серию">✕</button></div>':'';
  var mine=S.me==0?x.rm:x.rf,other=S.me==0?x.rf:x.rm,rp='';
  var ex='';
  if(x.ri)ex+='<span class="rb"><i class="lg im">IMDb</i>'+x.ri+'</span>';else if(x.r)ex+='<span class="rb"><i class="lg tm">TMDB</i>'+x.r+'</span>';
@@ -278,8 +284,8 @@ function detail(id){
  var rr=(ex?'<div class="rr">'+ex+'</div>':'')+(us?'<div class="rr">'+us+'</div>':'');
  for(var i=1;i<=10;i++)rp+='<button class="rp'+(mine===i?' on':'')+'" data-a="rate" data-v="'+(mine===i?'':i)+'">'+i+'</button>';
  openSheet('<div class="hd"><button class="pzb" data-lb="'+esc(x.poster||'')+'" aria-label="Постер">'+pz(x)+'</div></button><div><h2>'+esc(x.ru)+'</h2><div class="sub">'+esc(x.en)+'</div><div class="sub">'+meta(x)+'</div>'+rr+(x.no?'<span class="rt">💩</span>':'')+'</div></div>'+(x.o?'<p class="ov'+(x.no?' no':'')+'">'+esc(x.o)+'</p>':'')+
- '<div class="kv">'+(gens?'<span>'+th('c_genre')+'</span><span>'+gens+'</span>':'')+(x.co?'<span>'+th('c_coll')+'</span><span><button class="gb" data-coll="'+esc(x.co)+'">'+esc(x.co)+'</button></span>':'')+(x.country?'<span>'+th('c_country')+'</span><span>'+esc(x.country)+'</span>':'')+(rt?'<span>'+th('c_runtime')+'</span><span>'+rt+'</span>':'')+'</div>'+
- '<div class="sub lb">'+th('c_status')+'</div><div class="ga c4" style="margin-top:0">'+ab('status','want','📋',th('st_want'),x.st=='want')+ab('status','now','▶️',th('st_now'),x.st=='now')+ab('status','drop','⏹️',th('st_drop'),x.st=='drop')+ab('status','done','✅',th('st_done'),x.st=='done')+'</div>'+
+ '<div class="kv">'+(gens?'<span>'+th('c_genre')+'</span><span>'+gens+'</span>':'')+(x.co?'<span>'+th('c_coll')+'</span><span><button class="gb" data-coll="'+esc(x.co)+'">'+esc(x.co)+'</button></span>':'')+(x.f=='Сериал'&&x.eps&&x.eps.length?'<span>'+th('c_eps')+'</span><span>'+x.eps.join(' · ')+'</span>':'')+(x.country?'<span>'+th('c_country')+'</span><span>'+esc(x.country)+'</span>':'')+(rt?'<span>'+th('c_runtime')+'</span><span>'+rt+'</span>':'')+'</div>'+
+ '<div class="ga c4" style="margin-top:16px">'+ab('status','want','📋',th('st_want'),x.st=='want')+ab('status','now','▶️',th('st_now'),x.st=='now')+ab('status','drop','⏹️',th('st_drop'),x.st=='drop')+ab('status','done','✅',th('st_done'),x.st=='done')+'</div>'+
  '<div class="ga c2" style="margin-top:10px">'+ab('fav',undefined,'⭐',th('c_fav'),x.fav)+'<label class="ab"><span>📅</span>'+(x.d?esc(x.d):th('c_date'))+'<input type="date" id="dt"></label></div>'+
  '<div class="st"><b>'+th('c_views')+'</b><button data-a="n-">−</button><span class="n">'+eye(x.n||0)+'</span><button data-a="n+">+</button></div>'+(x.hist.length>1?'<div class="hs">'+th('c_dates',{dates:x.hist.join(' · ')})+'</div>':'')+sr+
  '<div class="st"><b>'+th('c_who')+'</b><button class="w0'+(x.by===0?' on':'')+'" data-a="who" data-v="0" aria-label="Он">'+dot(0)+'</button><button class="w1'+(x.by===1?' on':'')+'" data-a="who" data-v="1" aria-label="Она">'+dot(1)+'</button></div>'+
@@ -323,14 +329,14 @@ function act(a,v){
 }
 function ser(a){
  var x=byId(cur),m=(x.ser||'1,00').split(','),s=+m[0],e=+m[1];
- if(a=='s+'){s++;e=1}if(a=='s-'&&s>1){s--;e=1}if(a=='e+')e++;if(a=='e-'&&e>1)e--;
+ var E=x.eps||[];if(a=='s+'){s++;e=1}if(a=='s-'&&s>1){s--;e=1}if(a=='e+'){e++;if(E[s-1]&&e>E[s-1]&&s<E.length){s++;e=1}}if(a=='e-'){if(e>1)e--;else if(s>1){s--;e=E[s-1]||1}}
  x.ser=s+','+('0'+e).slice(-2);detail(x.id);refresh();hap();
  var id=x.id,v=x.ser;clearTimeout(ser.t);ser.t=setTimeout(function(){send(id,'ser',v)},700);
 }
 function hitsHtml(R){return R.length?R.map(function(c){return '<button class="hit" data-key="'+esc(c.key)+'" data-dup="'+(c.dup?1:0)+'"><div class="mini" style="background:'+bg(c.ru)+'">'+(EM[c.f]||'🎬')+(c.poster?'<img src="'+esc(c.poster)+'" alt="" onerror="this.remove()">':'')+'</div><div><b>'+esc(c.ru)+'</b><span class="sub">'+esc([c.y,String(c.f).toLowerCase()].filter(Boolean).join(', '))+'</span>'+(c.dup?'<div class="dup">'+th('add_dup')+'</div>':'')+'</div></button>'}).join(''):'<div class="empty">'+th('add_none')+'</div>'}
 function addSheet(){
  S.add=S.me;
- openSheet('<h2>'+th('add_title')+'</h2><div class="sub" style="margin:0 0 8px">'+th('add_who')+'</div><div class="fl" style="margin-bottom:12px">'+chip('add',0,dot(0),S.add==0)+chip('add',1,dot(1),S.add==1)+'</div><input class="q2" id="aq" placeholder="'+esc(tx('add_ph'))+'"><div id="hits"><div class="empty">'+th('add_hint')+'</div></div>','add');
+ openSheet('<h2>'+th('add_title')+'</h2><div class="sub" style="margin:0 0 8px">'+th('add_who')+'</div><div class="fl" style="margin-bottom:12px">'+chipw('add',0,0,S.add==0)+chipw('add',1,1,S.add==1)+'</div><input class="q2" id="aq" placeholder="'+esc(tx('add_ph'))+'"><div id="hits"><div class="empty">'+th('add_hint')+'</div></div>','add');
  $('aq').focus();
  $('aq').oninput=function(){
   clearTimeout(addSheet.t);var v=this.value.trim();
@@ -346,7 +352,7 @@ function addItem(key){
 }
 var HEART='<svg width="16" height="16" viewBox="0 0 24 24"><defs><linearGradient id="hg"><stop offset="50%" stop-color="#ff3b4e"/><stop offset="50%" stop-color="#8b5cf6"/></linearGradient></defs><path fill="url(#hg)" d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg>';
 function hubSheet(){var hb=function(k,ic,c){return '<button class="ab" data-hub="'+k+'"><span>'+ic+'</span>'+c+'</button>'};
- openSheet('<div class="ga c4" style="margin-top:34px">'+hb('stats','📊',th('hub_stats'))+hb('sup','🎲',th('hub_surprise'))+hb('recs','✨',th('hub_recs'))+hb('trash','🗑️',th('hub_trash'))+'</div>','hub')}
+ openSheet('<div class="ga c4" style="margin-top:4px">'+hb('stats','📊',th('hub_stats'))+hb('sup','🎲',th('hub_surprise'))+hb('recs','✨',th('hub_recs'))+hb('trash','🗑️',th('hub_trash'))+'</div>','hub')}
 function hubGo(k){({stats:statsSheet,sup:surprise,recs:recsSheet,trash:trashSheet})[k]()}
 function surprise(){
  var P=D.filter(function(x){return x.st=='want'&&!x.no});
@@ -390,6 +396,8 @@ function statsSheet(per){
   if(taste!==null)h+=blk('stats_taste','<div class="big">'+taste+'%</div><div class="sub">'+th('stats_taste_cap')+'</div>');
   if(a0||a1)h+=blk('stats_avg','<div class="li"><b>'+dot(0)+' '+(a0||'—')+'</b><b>'+dot(1)+' '+(a1||'—')+'</b></div>');
   if(c0+c1)h+=blk('stats_ideas','<div class="split"><i style="flex:'+c0+';background:#ff3b4e"></i><i style="flex:'+c1+';background:#8b5cf6"></i></div><div class="li"><b>'+dot(0)+' '+c0+'</b><b style="text-align:right">'+c1+' '+dot(1)+'</b></div>');
+  var v0=V.filter(function(v){return v.x.by===0}).length,v1=V.filter(function(v){return v.x.by===1}).length;
+  if(v0+v1)h+=blk('stats_whose','<div class="split"><i style="flex:'+v0+';background:#ff3b4e"></i><i style="flex:'+v1+';background:#8b5cf6"></i></div><div class="li"><b>'+dot(0)+' '+v0+'</b><b style="text-align:right">'+v1+' '+dot(1)+'</b></div>');
   if(top.length)h+=blk('stats_top',top.map(function(x){return '<div class="li"><b>'+esc(x.ru)+'</b><span>'+dot(0)+x.rm+' '+dot(1)+x.rf+'</span></div>'}).join(''));
   if(gx&&gap>=2)h+=blk('stats_gap','<div class="li"><b>'+esc(gx.ru)+'</b><span>'+dot(0)+gx.rm+' '+dot(1)+gx.rf+'</span></div>');
   if(rw&&rw.n>1)h+=blk('stats_rewatch','<div class="li"><b>'+esc(rw.ru)+'</b><span>'+eye(rw.n)+'</span></div>');
@@ -419,6 +427,7 @@ document.addEventListener('click',function(e){
  else if(d.k){
   if(d.k=='add'){S.add=+d.v;[].forEach.call(t.parentNode.children,function(b){b.classList.toggle('on',b===t)});return}
   if(d.k=='genre'){var gi=S.genres.indexOf(d.v);if(gi<0)S.genres.push(d.v);else S.genres.splice(gi,1)}
+  else if(d.k=='coll'){var ci=S.colls.indexOf(d.v);if(ci<0)S.colls.push(d.v);else S.colls.splice(ci,1)}
   else if(d.v===undefined)S[d.k]=!S[d.k];
   else if(d.k=='fmt'||d.k=='sort')S[d.k]=d.v;
   else S[d.k]=String(S[d.k])===d.v?null:(d.k=='by'?+d.v:d.v);
@@ -427,7 +436,7 @@ document.addEventListener('click',function(e){
  else if(d.a2=='reset'){resetFlt();render();filterSheet()}
  else if(d.a2=='close')closeSheet();
  else if(d.gen!==undefined)jump(function(){S.genres=[d.gen]});
- else if(d.coll!==undefined)jump(function(){S.coll=d.coll});
+ else if(d.coll!==undefined)jump(function(){S.colls=[d.coll]});
  else if(d.id&&t.classList.contains('tile')){S.rx=false;detail(d.id)}
  else if(d.a){if(/^[se][+-]$/.test(d.a))ser(d.a);else act(d.a,d.v)}
  else if(t.id=='add')addSheet();
