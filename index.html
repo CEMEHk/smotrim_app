@@ -20,7 +20,7 @@ button:focus-visible,input:focus-visible{outline:2px solid #7a5cff;outline-offse
 .tile,.chips,.sh button,.vm{user-select:none;-webkit-user-select:none}
 img{-webkit-user-drag:none}
 header{position:sticky;top:env(safe-area-inset-top,0px);z-index:9;background:var(--glass);padding:10px 16px}
-h2{margin:0 0 12px;font-size:22px;line-height:1.15;font-weight:800;letter-spacing:-.02em}
+h2{margin:0 0 12px;padding-right:40px;font-size:22px;line-height:1.15;font-weight:800;letter-spacing:-.02em}
 .sr{position:relative;display:flex;gap:8px;align-items:center}
 .ico{flex:none;width:40px;height:40px;border-radius:50%;background:var(--chip);display:grid;place-items:center;font-size:18px;line-height:1;padding:0;color:var(--tx)}
 .ico.on{background:var(--g);color:#fff}.ico.dim{opacity:.4}
@@ -33,13 +33,14 @@ h2{margin:0 0 12px;font-size:22px;line-height:1.15;font-weight:800;letter-spacin
 .seg button{flex:1;min-width:0;padding:9px 2px;border-radius:12px;font-weight:600;font-size:13px;white-space:nowrap;color:var(--mu)}
 .seg button.on{background:var(--sf);color:var(--tx);box-shadow:0 2px 8px var(--ln)}
 @media (max-width:400px){.seg button{font-size:12px}}
-.chips{display:flex;gap:6px;padding:12px 16px 0}
+.chips{position:sticky;top:calc(env(safe-area-inset-top,0px) + var(--hh,104px));z-index:8;display:flex;gap:6px;padding:10px 16px 8px;background:var(--glass);transition:transform .22s ease,opacity .22s ease}
+.chips.hide{transform:translateY(-120%);opacity:0;pointer-events:none}
 .cp{display:inline-flex;align-items:center;justify-content:center;padding:6px 14px;border-radius:18px;background:var(--chip);color:var(--mu);font-weight:500}
 .chips .cp{flex:1 1 auto;min-width:0;padding:6px 4px;font-size:13px;white-space:nowrap}
 .chips .cp.ic{flex:0 0 auto;min-width:38px;padding:6px 8px}
 .cp.on{background:var(--g);color:#fff}
 .nb{margin-left:4px;background:var(--tx);color:var(--bg);border-radius:10px;padding:0 6px;font-size:11px}
-.cl{padding:10px 16px 0;color:var(--mu);font-size:13px}
+.cl{padding:4px 16px 0;color:var(--mu);font-size:13px}
 .grid{display:grid;align-items:start;padding:12px 16px}
 .g2{grid-template-columns:repeat(2,minmax(0,1fr));gap:20px 14px}
 .g3{grid-template-columns:repeat(3,minmax(0,1fr));gap:16px 10px}
@@ -89,7 +90,8 @@ html.out #lockmsg{display:block;padding:140px 24px;text-align:center;color:var(-
 .sh{position:fixed;left:50%;bottom:0;width:min(100%,480px);max-height:92%;overflow:auto;overscroll-behavior:contain;transform:translate(-50%,100%);transition:transform .2s ease;background:var(--sf);border-radius:28px 28px 0 0;padding:10px 20px calc(24px + env(safe-area-inset-bottom,0px));z-index:31}
 .sh.on{transform:translate(-50%,0)}
 .grip{width:40px;height:4px;border-radius:2px;background:var(--ln);margin:0 auto 12px}
-.x{position:sticky;top:0;float:right;z-index:3;width:34px;height:34px;margin:0 0 4px 8px;border-radius:50%;background:var(--chip);display:grid;place-items:center;padding:0;font-size:15px;line-height:1}
+.sx{position:sticky;top:0;height:0;z-index:3;display:flex;justify-content:flex-end}
+.x{width:34px;height:34px;margin-top:-2px;border-radius:50%;background:var(--chip);display:grid;place-items:center;padding:0;font-size:15px;line-height:1}
 .hd{display:flex;gap:16px;clear:both}
 .hd .pz{width:100px;flex:none;font-size:38px;border-radius:16px}
 .hd h2{margin:0}
@@ -132,14 +134,14 @@ html.out #lockmsg{display:block;padding:140px 24px;text-align:center;color:var(-
 .del span{position:relative}
 .sh .empty{padding:28px 0}
 .pzb{flex:none;width:100px;padding:0;border-radius:16px}
-.rr{display:flex;flex-wrap:wrap;align-items:center;gap:8px;margin-top:14px}
+.rr{display:flex;flex-wrap:wrap;align-items:center;gap:8px;margin-top:10px}
 .rb{display:inline-flex;align-items:center;gap:6px;height:30px;padding:0 10px 0 4px;border-radius:15px;background:var(--chip);font-weight:700;font-size:13px;line-height:1}
 .rb.us{padding:0 12px 0 10px}.rb svg{display:block}
 .lg{display:inline-flex;align-items:center;justify-content:center;height:22px;min-width:36px;padding:0 6px;border-radius:6px;font-size:10px;font-weight:800;font-style:normal;letter-spacing:.02em;line-height:1}
 .lg.im{background:#f5c518;color:#000}.lg.kp{background:#000;color:#ff6600;box-shadow:inset 0 0 0 1px rgba(255,255,255,.18)}.lg.tm{background:#0d253f;color:#01d277}
 .note{display:block;width:100%;min-height:44px;margin-top:16px;padding:12px 14px;border:0;border-radius:14px;background:var(--chip);color:var(--tx);font:inherit;resize:none;overflow:hidden}
-.lb{position:fixed;inset:0;z-index:50;background:rgba(0,0,0,.92);display:none;place-items:center;padding:16px}
-.lb.on{display:grid}.lb img{max-width:100%;max-height:100%;border-radius:12px}
+.lbx{position:fixed;inset:0;z-index:50;background:rgba(0,0,0,.92);display:none;place-items:center;padding:16px}
+.lbx.on{display:grid}.lbx img{max-width:100%;max-height:100%;border-radius:12px}
 .sg3{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px;margin-top:14px}
 .sxx{background:var(--chip);border-radius:16px;padding:12px 6px;text-align:center}
 .sxx b{display:block;font-size:22px}.sxx span{font-size:12px;color:var(--mu)}
@@ -159,7 +161,7 @@ html.out #lockmsg{display:block;padding:140px 24px;text-align:center;color:var(-
 </style>
 </head>
 <body>
-<header>
+<header id="hdr">
   <div class="sr"><input class="q" id="q" type="search" placeholder="Что будем смотреть?"><button class="ico" id="ref" aria-label="Обновить">↻</button><button class="ico" id="eye"></button><button class="ico" id="vw" aria-label="Вид"></button><button class="ico" id="more" aria-label="Ещё">⋯</button><div class="vm" id="vm"></div></div>
   <div class="seg" id="tabs"></div>
 </header>
@@ -170,7 +172,7 @@ html.out #lockmsg{display:block;padding:140px 24px;text-align:center;color:var(-
 <button class="fab" id="add" aria-label="Добавить"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg></button>
 <div class="bk" id="bk"></div>
 <div class="sh" id="sh"></div>
-<div class="lb" id="lb"></div>
+<div class="lbx" id="lb"></div>
 <div id="toast"></div>
 <script>
 var API='https://script.google.com/macros/s/AKfycbwOibNpstA0MZkHToCGmW91yegnE65amjoVrBtZygny38Tv5JAtZRoK75ShLOo8yIom/exec';
@@ -246,7 +248,7 @@ function render(){
   return '<button class="tile" data-id="'+esc(x.id)+'">'+pz(x)+(x.st=='now'?'<div class="bdg nw">▶</div>':x.st=='drop'?'<div class="bdg nw dp">⏹</div>':'')+(x.n>0?'<div class="bdg cnt">'+eye(x.n)+'</div>':'')+(prg?'<div class="bdg prg">'+prg+'</div>':'')+(x.fav?'<div class="bdg fv">⭐</div>':'')+'</div><div class="tt">'+esc(x.ru)+'</div><div class="mt">'+meta(x)+'</div></button>'}).join('');
 }
 function refresh(){if(SHEET)dirty=true;else render()}
-function openSheet(h,k){var keep=SHEET==k?$('sh').scrollTop:0;SHEET=k;$('sh').innerHTML='<div class="grip"></div><button class="x" data-a2="close" aria-label="Закрыть">✕</button>'+h;$('sh').scrollTop=keep;$('bk').className='bk on';$('sh').className='sh on';document.documentElement.classList.add('lock')}
+function openSheet(h,k){var keep=SHEET==k?$('sh').scrollTop:0;SHEET=k;$('sh').innerHTML='<div class="grip"></div><div class="sx"><button class="x" data-a2="close" aria-label="Закрыть">✕</button></div>'+h;$('sh').scrollTop=keep;$('bk').className='bk on';$('sh').className='sh on';document.documentElement.classList.add('lock')}
 function closeSheet(){SHEET='';$('bk').className='bk';$('sh').className='sh';document.documentElement.classList.remove('lock');if(dirty){dirty=false;render()}}
 function isOn(k,v){return k=='by'?S.by===+v:k=='genre'?S.genres.indexOf(v)>=0:k=='sort'?S.sort==v:k=='fmt'?S.fmt==v:k=='coll'?S.coll===v:!!S[k]}
 function syncChips(){[].forEach.call(document.querySelectorAll('#sh .cp[data-k]'),function(b){b.classList.toggle('on',isOn(b.dataset.k,b.dataset.v))});var b=$('shn');if(b)b.textContent=tx('f_show',{n:D.filter(ok).length})}
@@ -268,15 +270,14 @@ function detail(id){
  var gens=String(x.g||'').split(/,\s*/).filter(Boolean).map(function(g){return '<button class="gb" data-gen="'+esc(g.toLowerCase())+'">'+esc(cap(g))+'</button>'}).join('');
  var sr=x.f=='Сериал'?'<div class="st"><b>'+th('c_series',{ser:x.ser||'—'})+'</b><em>'+th('c_season')+'</em><button data-a="s-">−</button><button data-a="s+">+</button><em>'+th('c_episode')+'</em><button data-a="e-">−</button><button data-a="e+">+</button><button data-a="ser" data-v="" aria-label="Сбросить серию">✕</button></div>':'';
  var mine=S.me==0?x.rm:x.rf,other=S.me==0?x.rf:x.rm,rp='';
- var rr='';
- if(x.r)rr+='<span class="rb"><i class="lg tm">TMDB</i>'+x.r+'</span>';
- if(x.ri)rr+='<span class="rb"><i class="lg im">IMDb</i>'+x.ri+'</span>';
- if(x.rk)rr+='<span class="rb"><i class="lg kp">КП</i>'+x.rk+'</span>';
- var both=x.rm&&x.rf,avg=both?Math.round((x.rm+x.rf)*5)/10:(x.rm||x.rf||0);
- if(x.rm||x.rf)rr+='<button class="rb us" data-a="rx" aria-label="Наши оценки">'+(both&&S.rx?dot(0)+' '+x.rm+' · '+dot(1)+' '+x.rf:(both?HEART:dot(x.rm?0:1))+' '+avg)+'</button>';
- rr=rr?'<div class="rr">'+rr+'</div>':'';
+ var ex='';
+ if(x.ri)ex+='<span class="rb"><i class="lg im">IMDb</i>'+x.ri+'</span>';else if(x.r)ex+='<span class="rb"><i class="lg tm">TMDB</i>'+x.r+'</span>';
+ if(x.rk)ex+='<span class="rb"><i class="lg kp">КП</i>'+x.rk+'</span>';
+ var both=x.rm&&x.rf,avg=both?Math.round((x.rm+x.rf)*5)/10:(x.rm||x.rf||0),us='';
+ if(x.rm||x.rf)us='<button class="rb us" data-a="rx" aria-label="Наши оценки">'+(both&&S.rx?dot(0)+' '+x.rm+' · '+dot(1)+' '+x.rf:(both?HEART:dot(x.rm?0:1))+' '+avg)+'</button>';
+ var rr=(ex?'<div class="rr">'+ex+'</div>':'')+(us?'<div class="rr">'+us+'</div>':'');
  for(var i=1;i<=10;i++)rp+='<button class="rp'+(mine===i?' on':'')+'" data-a="rate" data-v="'+(mine===i?'':i)+'">'+i+'</button>';
- openSheet('<div class="hd"><button class="pzb" data-lb="'+esc(x.poster||'')+'" aria-label="Постер">'+pz(x)+'</div></button><div><h2>'+esc(x.ru)+'</h2><div class="sub">'+esc(x.en)+'</div><div class="sub">'+meta(x)+'</div>'+(x.no?'<span class="rt">💩</span>':'')+'</div></div>'+rr+(x.o?'<p class="ov'+(x.no?' no':'')+'">'+esc(x.o)+'</p>':'')+
+ openSheet('<div class="hd"><button class="pzb" data-lb="'+esc(x.poster||'')+'" aria-label="Постер">'+pz(x)+'</div></button><div><h2>'+esc(x.ru)+'</h2><div class="sub">'+esc(x.en)+'</div><div class="sub">'+meta(x)+'</div>'+rr+(x.no?'<span class="rt">💩</span>':'')+'</div></div>'+(x.o?'<p class="ov'+(x.no?' no':'')+'">'+esc(x.o)+'</p>':'')+
  '<div class="kv">'+(gens?'<span>'+th('c_genre')+'</span><span>'+gens+'</span>':'')+(x.co?'<span>'+th('c_coll')+'</span><span><button class="gb" data-coll="'+esc(x.co)+'">'+esc(x.co)+'</button></span>':'')+(x.country?'<span>'+th('c_country')+'</span><span>'+esc(x.country)+'</span>':'')+(rt?'<span>'+th('c_runtime')+'</span><span>'+rt+'</span>':'')+'</div>'+
  '<div class="sub lb">'+th('c_status')+'</div><div class="ga c4" style="margin-top:0">'+ab('status','want','📋',th('st_want'),x.st=='want')+ab('status','now','▶️',th('st_now'),x.st=='now')+ab('status','drop','⏹️',th('st_drop'),x.st=='drop')+ab('status','done','✅',th('st_done'),x.st=='done')+'</div>'+
  '<div class="ga c2" style="margin-top:10px">'+ab('fav',undefined,'⭐',th('c_fav'),x.fav)+'<label class="ab"><span>📅</span>'+(x.d?esc(x.d):th('c_date'))+'<input type="date" id="dt"></label></div>'+
@@ -345,7 +346,7 @@ function addItem(key){
 }
 var HEART='<svg width="16" height="16" viewBox="0 0 24 24"><defs><linearGradient id="hg"><stop offset="50%" stop-color="#ff3b4e"/><stop offset="50%" stop-color="#8b5cf6"/></linearGradient></defs><path fill="url(#hg)" d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg>';
 function hubSheet(){var hb=function(k,ic,c){return '<button class="ab" data-hub="'+k+'"><span>'+ic+'</span>'+c+'</button>'};
- openSheet('<h2>'+th('hub_title')+'</h2><div class="ga c2" style="margin-top:0">'+hb('stats','📊',th('hub_stats'))+hb('sup','🎲',th('hub_surprise'))+hb('recs','✨',th('hub_recs'))+hb('trash','🗑️',th('hub_trash'))+'</div>','hub')}
+ openSheet('<div class="ga c4" style="margin-top:34px">'+hb('stats','📊',th('hub_stats'))+hb('sup','🎲',th('hub_surprise'))+hb('recs','✨',th('hub_recs'))+hb('trash','🗑️',th('hub_trash'))+'</div>','hub')}
 function hubGo(k){({stats:statsSheet,sup:surprise,recs:recsSheet,trash:trashSheet})[k]()}
 function surprise(){
  var P=D.filter(function(x){return x.st=='want'&&!x.no});
@@ -397,7 +398,7 @@ function statsSheet(per){
 }
 function jump(f){closeSheet();S.tab='all';resetFlt();f();S.q='';$('q').value='';render();window.scrollTo(0,0)}
 document.addEventListener('click',function(e){
- if(e.target.closest('#lb')){$('lb').className='lb';return}
+ if(e.target.closest('#lb')){$('lb').className='lbx';return}
  if(!e.target.closest('#vm,#vw'))$('vm').className='vm';
  var t=e.target.closest('button,#bk');if(!t)return;var d=t.dataset;
  if(t.id=='bk')closeSheet();
@@ -408,7 +409,7 @@ document.addEventListener('click',function(e){
  else if(d.sup){cur=d.sup;act('status','now')}
  else if(d.a2=='sup')surprise();
  else if(d.st)statsSheet(d.st);
- else if(d.lb!==undefined){if(d.lb){var lbx=$('lb');lbx.innerHTML='<img alt="" src="'+esc(d.lb.replace('/w500/','/w780/'))+'">';lbx.className='lb on'}}
+ else if(d.lb!==undefined){if(d.lb){var lbx=$('lb');lbx.innerHTML='<img alt="" src="'+esc(d.lb.replace('/w500/','/w780/'))+'">';lbx.className='lbx on'}}
  else if(d.a=='rx'){S.rx=!S.rx;detail(cur)}
  else if(t.id=='ref'){toast(tx('refreshing'));load()}
  else if(t.id=='eye'){if(S.tab=='all'){S.showDone=!S.showDone;render()}else toast(tx('eye_hint'))}
@@ -434,7 +435,7 @@ document.addEventListener('click',function(e){
 },false);
 document.addEventListener('change',function(e){if(e.target.id=='dt'&&e.target.value)act('date',e.target.value);if(e.target.id=='nt'){var x=byId(cur);if(x){x.note=e.target.value;store();send(x.id,'note',e.target.value)}}});
 document.addEventListener('input',function(e){if(e.target.id=='nt'){e.target.style.height='auto';e.target.style.height=e.target.scrollHeight+'px'}});
-document.addEventListener('keydown',function(e){if(e.key=='Escape'){if($('lb').className=='lb on')$('lb').className='lb';else closeSheet()}});
+document.addEventListener('keydown',function(e){if(e.key=='Escape'){if($('lb').className=='lbx on')$('lb').className='lbx';else closeSheet()}});
 $('q').oninput=function(){S.q=this.value;render()};
 // Удаление: нужно удерживать кнопку около секунды
 var hp=null;
@@ -454,6 +455,10 @@ document.addEventListener('pointerdown',function(e){var b=e.target.closest('.del
  document.addEventListener('mouseup',function(){if(sc&&mv&&performance.now()-lt<90)coast(sc);sc=null});
  document.addEventListener('wheel',stop,{passive:true});
  document.addEventListener('contextmenu',function(e){if(!e.target.closest(EX))e.preventDefault()})})();
+(function(){var ly=0,hh=function(){document.documentElement.style.setProperty('--hh',$('hdr').offsetHeight+'px')};
+ hh();window.addEventListener('resize',hh);window.addEventListener('load',hh);if(window.ResizeObserver)new ResizeObserver(hh).observe($('hdr'));
+ window.addEventListener('scroll',function(){if(SHEET)return;var y=window.pageYOffset,c=$('chips');
+  if(y<60||y<ly-8)c.classList.remove('hide');else if(y>ly+8)c.classList.add('hide');ly=y},{passive:true})})();
 try{D=JSON.parse(localStorage.getItem('sm')||'[]')}catch(e){D=[]}
 try{S.v=localStorage.getItem('smv')||S.v;setBg(localStorage.getItem('smb')||'');setTx(JSON.parse(localStorage.getItem('smt')||'null'))}catch(e){}
 if(!VM.some(function(v){return v[0]==S.v}))S.v='2';
