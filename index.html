@@ -42,7 +42,8 @@ h2{margin:0 0 12px;padding-right:40px;font-size:22px;line-height:1.15;font-weigh
 .cp.wc{background:transparent;border:2px solid var(--ln);color:var(--tx);padding:4px 18px;font-size:20px;line-height:1.2}
 .cp.wc.on{background:transparent;border-color:var(--wc);color:var(--tx)}
 .nb{margin-left:4px;background:var(--tx);color:var(--bg);border-radius:10px;padding:0 6px;font-size:11px}
-.cl{padding:4px 16px 0;color:var(--mu);font-size:13px}
+.cl{display:flex;align-items:center;justify-content:space-between;min-height:36px;padding:4px 16px 0;color:var(--mu);font-size:13px}
+.rst{flex:none;padding:5px 12px;border-radius:14px;background:var(--chip);color:var(--tx);font-size:12px;font-weight:600}
 .grid{display:grid;align-items:start;padding:12px 16px}
 .g2{grid-template-columns:repeat(2,minmax(0,1fr));gap:20px 14px}
 .g3{grid-template-columns:repeat(3,minmax(0,1fr));gap:16px 10px}
@@ -176,8 +177,9 @@ html.out #lockmsg{display:block;padding:140px 24px;text-align:center;color:var(-
 @keyframes eggpop{from{transform:scale(.6);opacity:0}}
 button.li{width:100%;padding:0;text-align:left}
 button.bc{padding:0;background:none;border:0}button.bc:disabled{cursor:default}
-select.cp.yr{appearance:none;-webkit-appearance:none;border:0;font:inherit;font-weight:500;padding:6px 34px 6px 16px;color:var(--mu);background:var(--chip) url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'><path d='M2 4l4 4 4-4' fill='none' stroke='%237d7790' stroke-width='1.8' stroke-linecap='round'/></svg>") no-repeat right 13px center/12px}
-select.cp.yr.on{color:#fff;background:var(--g) url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'><path d='M2 4l4 4 4-4' fill='none' stroke='white' stroke-width='1.8' stroke-linecap='round'/></svg>") no-repeat right 13px center/12px}
+select.cp.yr{appearance:none;-webkit-appearance:none;border:0;font:inherit;font-weight:500;padding:6px 34px 6px 16px;color:var(--mu);background:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'><path d='M2 4l4 4 4-4' fill='none' stroke='%237d7790' stroke-width='1.8' stroke-linecap='round'/></svg>") no-repeat right 13px center/12px,var(--chip)}
+select.cp.yr.on{color:#fff;background:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'><path d='M2 4l4 4 4-4' fill='none' stroke='white' stroke-width='1.8' stroke-linecap='round'/></svg>") no-repeat right 13px center/12px,var(--g)}
+select.cp.yr option{color:var(--tx);background:var(--sf)}
 #toast{position:fixed;left:50%;bottom:calc(100px + env(safe-area-inset-bottom,0px));transform:translateX(-50%);max-width:88%;padding:12px 18px;border-radius:16px;background:var(--tx);color:var(--bg);font-weight:500;z-index:40;opacity:0;pointer-events:none;transition:opacity .2s}
 #toast.on{opacity:1}
 </style>
@@ -207,6 +209,7 @@ Object.assign(T0,{"hub_title": "Ещё", "hub_stats": "Статистика", "h
 Object.assign(T0,{"sort_year_asc": "Старые по году", "sort_rating_asc": "Рейтинг: от низкого", "stats_whose": "Чьи идеи смотрим чаще", "c_eps": "Серий по сезонам"});
 Object.assign(T0,{"stats_fun": "Это {d}, {m}, {y}, {c} и целых {s}. А рядом с тобой всё это пролетело как одно мгновение 💞", "stats_taste_hi": "Почти одно сердце на двоих 💞", "stats_taste_mid": "Вкусы разные, зато интересно 😄", "stats_taste_lo": "Противоположности притягиваются 🧲", "stats_whose_him": "Его идеи смотрим чаще 😎", "stats_whose_her": "Её идеи смотрим чаще 👑", "stats_whose_tie": "Поровну — идеальный баланс 💞", "c_seasons": "Сезонов", "c_eplen": "Длительность серии", "egg_text": "Малыш, я тебя люблю :*"});
 Object.assign(T0,{"egg_link": "", "egg_btn_him": "Написать ему", "egg_btn_her": "Написать ей", "egg_close": "Закрыть"});
+Object.assign(T0,{"f_reset_all": "Сбросить фильтры"});
 function tx(k,v){var s=(T[k]!=null&&T[k]!==''?T[k]:T0[k]);s=String(s==null?k:s);if(v)for(var n in v)s=s.split('{'+n+'}').join(v[n]);return s}
 function th(k,v){return esc(tx(k,v)).replace(/\n/g,'<br>')}
 function setTx(t){T=t||{};try{localStorage.setItem('smt',JSON.stringify(T))}catch(e){}$('q').placeholder=tx('search_ph')}
@@ -270,7 +273,8 @@ function render(){
  else if(s=='rating_asc')L.sort(function(a,b){return (a.ri||a.r||99)-(b.ri||b.r||99)});
  else if(s=='date')L.sort(function(a,b){return ts(b.d)-ts(a.d)});
  else L.sort(function(a,b){return (b.ad||0)-(a.ad||0)||(b.ro||0)-(a.ro||0)});
- $('cl').innerHTML=esc(tx((n>0||S.fmt!='Все'||S.fav||S.colls.length||S.q.trim())?'count_found':'count_total',{n:L.length}))+(S.per?' <button class="cp on" data-k="perx" style="min-height:0;padding:3px 10px;margin-left:6px">'+esc(perLabel())+' ✕</button>':'');
+ var anyF=n>0||S.fmt!='Все'||S.fav;
+ $('cl').innerHTML='<span>'+esc(tx((anyF||S.q.trim())?'count_found':'count_total',{n:L.length}))+(S.per?' <button class="cp on" data-k="perx" style="min-height:0;padding:3px 10px;margin-left:6px">'+esc(perLabel())+' ✕</button>':'')+'</span><button class="rst" data-a2="rstall"'+(anyF?'':' style="visibility:hidden" tabindex="-1" aria-hidden="true"')+'>'+th('f_reset_all')+'</button>';
  var li=S.v=='l'||S.v=='t',w=$('list');w.className='grid '+(li?'gl':'g'+S.v);
  if(!L.length){w.innerHTML='<div class="empty">'+th(D.length?'empty_list':'loading')+'</div>';return}
  w.innerHTML=L.map(function(x){
@@ -448,7 +452,7 @@ function statsSheet(per){
   if(c0+c1)h+=blk('stats_ideas','<div class="split"><i style="flex:'+c0+';background:#ff3b4e"></i><i style="flex:'+c1+';background:#8b5cf6"></i></div><div class="li"><b>'+dot(0)+' '+c0+'</b><b style="text-align:right">'+c1+' '+dot(1)+'</b></div>');
   var P=[0,1].map(function(w){return D.filter(function(x){return x.by===w}).length}),Wn=[0,1].map(function(w){return W.filter(function(x){return x.by===w}).length});
   var pc=[0,1].map(function(w){return P[w]?Math.round(Wn[w]/P[w]*100):0});
-  if(pc[0]+pc[1])h+=blk('stats_whose','<div class="split"><i style="flex:'+pc[0]+';background:#ff3b4e"></i><i style="flex:'+pc[1]+';background:#8b5cf6"></i></div><div class="li"><b>'+dot(0)+' '+pc[0]+'%</b><b style="text-align:right">'+pc[1]+'% '+dot(1)+'</b></div>');
+  if(pc[0]+pc[1])h+=blk('stats_whose','<div class="split"><i style="flex:'+pc[0]+';background:#ff3b4e"></i><i style="flex:'+pc[1]+';background:#8b5cf6"></i></div><div class="li"><b>'+dot(0)+'</b><b style="text-align:right">'+dot(1)+'</b></div>');
   if(top.length)h+=blk('stats_top',top.map(function(x){return row(x,dot(0)+x.rm+' '+dot(1)+x.rf)}).join(''));
   if(gx&&gap>=2)h+=blk('stats_gap',row(gx,dot(0)+gx.rm+' '+dot(1)+gx.rf));
   if(rw&&rw.n>1)h+=blk('stats_rewatch',row(rw,eye(rw.n)));
@@ -488,6 +492,7 @@ document.addEventListener('click',function(e){
   else S[d.k]=String(S[d.k])===d.v?null:(d.k=='by'?+d.v:d.v);
   render();if(SHEET=='flt')syncChips()}
  else if(d.a2=='flt')filterSheet();
+ else if(d.a2=='rstall'){resetFlt();render()}
  else if(d.a2=='reset'){resetFlt();render();filterSheet()}
  else if(d.a2=='close')closeSheet();
  else if(d.gen!==undefined)jump(function(){S.genres=[d.gen]});
