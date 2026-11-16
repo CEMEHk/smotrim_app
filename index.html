@@ -17,7 +17,7 @@ html.lock{overflow:hidden}
 button,input,label,.tile{touch-action:manipulation}
 button{font:inherit;line-height:1.2;color:inherit;border:0;background:none;cursor:pointer;letter-spacing:inherit}
 button:focus-visible,input:focus-visible{outline:2px solid #7a5cff;outline-offset:2px}
-.tile,.chips,.sh button,.vm{user-select:none;-webkit-user-select:none}
+.tile,.chips,.sh button,.vm,.ico,.hrt,button{user-select:none;-webkit-user-select:none;-webkit-touch-callout:none}
 img{-webkit-user-drag:none}
 header{position:sticky;top:env(safe-area-inset-top,0px);z-index:9;background:var(--glass);padding:10px 16px}
 h2{margin:0 0 12px;padding-right:40px;font-size:22px;line-height:1.15;font-weight:800;letter-spacing:-.02em}
@@ -565,14 +565,22 @@ function checkSpecial(){if(specialChecked)return;specialChecked=true;
   try{localStorage.setItem(key,String(c+1))}catch(x){}
   var y=r.y?n.getFullYear()-r.y:0,txt=String(r.t).split('{years}').join(y>0?y+' '+pl(y,['год','года','лет']):'');
   egg(esc(txt).replace(/\n/g,'<br>'),{plain:1,hearts:36,emojis:emo(r.e)});return}}
-(function(){var mo=$('more');mo.addEventListener('pointerdown',function(){lpDone=false;clearTimeout(lpT);lpT=setTimeout(function(){lpDone=true;togetherMsg()},650)});
- ['pointerup','pointerleave','pointercancel'].forEach(function(n){mo.addEventListener(n,function(){clearTimeout(lpT)})});
+(function(){var mo=$('more');mo.addEventListener('pointerdown',function(){lpDone=false;clearTimeout(lpT);lpT=setTimeout(function(){lpDone=true;try{getSelection().removeAllRanges()}catch(x){}hap();togetherMsg()},650)});
+ ['pointerup','pointerleave','pointercancel'].forEach(function(n){mo.addEventListener(n,function(){clearTimeout(lpT);if(lpDone)setTimeout(function(){lpDone=false},500)})});
  mo.addEventListener('contextmenu',function(e){e.preventDefault()})})();
-// Три быстрых нажатия на любое сердечко (красное или фиолетовое): на втором — лёгкий отклик, на третьем — пасхалка
-document.addEventListener('click',function(e){var hr=e.target.closest&&e.target.closest('.hrt');if(!hr)return;
- var n=Date.now();if(n-tp.t>700)tp.n=0;tp.t=n;tp.n++;
- if(tp.n==2){var cx=e.clientX,cy=e.clientY;setTimeout(function(){var el=document.elementFromPoint(cx,cy),h2=el&&el.closest&&el.closest('.hrt');if(h2){h2.classList.add('w');setTimeout(function(){h2.classList.remove('w')},450)}},40);hap()}
- if(tp.n>=3){tp.n=0;egg()}},true);
+// Пасхалка: удержание любого сердечка ~0,7 с (на 0,35 с оно вздрагивает). Сдвиг пальца больше 10 px отменяет
+var hl={t:0,t2:0,x:0,y:0,on:false,sup:0};
+function hlStop(){clearTimeout(hl.t);clearTimeout(hl.t2);hl.on=false}
+document.addEventListener('pointerdown',function(e){
+ if(e.pointerType=='mouse'&&e.button!==0)return;
+ var hr=e.target.closest&&e.target.closest('.hrt');if(!hr)return;
+ hlStop();hl.x=e.clientX;hl.y=e.clientY;hl.on=true;
+ hl.t2=setTimeout(function(){hr.classList.add('w');setTimeout(function(){hr.classList.remove('w')},450);hap()},350);
+ hl.t=setTimeout(function(){hl.on=false;hl.sup=Date.now();try{getSelection().removeAllRanges()}catch(x){}egg()},700)},true);
+document.addEventListener('pointermove',function(e){if(hl.on&&(Math.abs(e.clientX-hl.x)>10||Math.abs(e.clientY-hl.y)>10))hlStop()},true);
+['pointerup','pointercancel'].forEach(function(n){document.addEventListener(n,hlStop,true)});
+document.addEventListener('click',function(e){if(hl.sup&&Date.now()-hl.sup<600){hl.sup=0;e.stopPropagation();e.preventDefault()}},true);
+document.addEventListener('contextmenu',function(e){if(e.target.closest&&e.target.closest('.hrt'))e.preventDefault()},true);
 try{D=JSON.parse(localStorage.getItem('sm')||'[]')}catch(e){D=[]}
 try{S.v=localStorage.getItem('smv')||S.v;setBg(localStorage.getItem('smb')||'');setTx(JSON.parse(localStorage.getItem('smt')||'null'))}catch(e){}
 if(!VM.some(function(v){return v[0]==S.v}))S.v='2';
